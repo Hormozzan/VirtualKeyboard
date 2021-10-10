@@ -22,9 +22,10 @@ class MyKey:
 
     @staticmethod
     def create_all():
-        labels = [['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']'],
-                ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', '\\'],
-                ['Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/']]
+        labels = [['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '='],
+                  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']'],
+                  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', '\\'],
+                  ['Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/']]
 
         keys = []
 
@@ -32,16 +33,16 @@ class MyKey:
             for j, label in enumerate(labels[i]):
                 keys.append(MyKey((50 * j + 25, 50 * i + 10), label))
 
-        keys.append(MyKey((525, 110), 'CAPS', (90, 40), (5, 30)))
-        keys.append(MyKey((25, 160), 'Space', (490, 40), (200, 30)))
-        keys.append(MyKey((525, 160), 'BKSP', (90, 40), (5, 30)))
+        keys.append(MyKey((525, 160), 'Shift', (90, 40), (5, 30)))
+        keys.append(MyKey((25, 210), 'Space', (490, 40), (200, 30)))
+        keys.append(MyKey((525, 210), 'BKSP', (90, 40), (5, 30)))
 
         return keys
 
     @staticmethod
-    def draw_all(keys, img, place_holder_text):
+    def draw_all(keys, img, place_holder_text, shift=False):
         for key in keys:
-            key.draw(img)
+            key.draw(img, (0, 255, 0), 1) if (key.label == 'Shift' and shift) else key.draw(img)
 
-        cv2.rectangle(img, (25, 210), (615, 250), (130, 0, 130), cv2.FILLED)
-        cv2.putText(img, place_holder_text, (30, 240), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
+        cv2.rectangle(img, (25, 260), (615, 300), (130, 0, 130), cv2.FILLED)
+        cv2.putText(img, place_holder_text, (30, 290), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)

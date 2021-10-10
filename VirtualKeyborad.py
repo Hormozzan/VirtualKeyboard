@@ -24,8 +24,28 @@ keyboard = Controller()
 keys = MyKey.create_all()
 
 ### Initializing some variables
+sym_dict = {'1': '!',
+            '2': '@',
+            '3': '#',
+            '4': '$',
+            '5': '%',
+            '6': '^',
+            '7': '&',
+            '8': '*',
+            '9': '(',
+            '0': ')',
+            '-': '_',
+            '=': '+',
+            '[': '{',
+            ']': '}',
+            ';': ':',
+            '\'': '"',
+            '\\': '|',
+            ',': '<',
+            '.': '>',
+            '/': '?'}
 place_holder_text = ''
-caps = False
+shift = False
 
 while True:
     ### Reading from the webCam object
@@ -35,7 +55,7 @@ while True:
     img = detector.findHands(img)
 
     ### Drawing place holder and keyboard keys
-    MyKey.draw_all(keys, img, place_holder_text)
+    MyKey.draw_all(keys, img, place_holder_text, shift)
 
     ### Getting landmarks' list and bounding box
     lmList, bboxInfo = detector.findPosition(img)
@@ -51,38 +71,37 @@ while True:
                 ### Changing color of the hovered key and magnifying it
                 key.draw(img, (180, 0, 180), hovered=1)
 
-                ### Computing distance between tip of index finger and tip of middle finger
+                ### Computing distance between index fingertip and middle fingertip
                 length, _, _ = detector.findDistance(8, 12, img, draw=False)
 
-                ### Checking whether fingers' tips are close enough to each other, in order to tap the hovered key
+                ### Checking whether fingertips are close enough to each other, in order to tap the hovered key
                 if length < 30:
-                    ### Changing color of the tapped key
+                    ### Changing color of tapped key
                     key.draw(img, (0, 255, 0))
 
+                    label = key.label
+
                     ### Checking the tapped key to type
-                    if key.label == 'Space':
-                        place_holder_text += ' '
+                    if label == 'Space':
                         keyboard.tap(Key.space)
-                    elif key.label == 'CAPS':
-                        caps = not caps
-                        keyboard.tap(Key.caps_lock)
-                    elif key.label == 'BKSP':
+                        place_holder_text += ' '
+                    elif label == 'Shift':
+                        shift = not shift
+                    elif label == 'BKSP':
                         keyboard.tap(Key.backspace)
-                        if place_holder_text:
-                            place_holder_text = place_holder_text[:-1]
-                        else:
-                            place_holder_text = ''
+                        place_holder_text = place_holder_text[:-1] if place_holder_text else ''
+                    elif shift:
+                        with keyboard.pressed(Key.shift):
+                            keyboard.tap(label.lower())
+                            place_holder_text += sym_dict[label.lower()] if label.lower() in sym_dict.keys()\
+                                else label.upper()
                     else:
-                        if caps:
-                            place_holder_text += key.label.upper()
-                            keyboard.tap(key.label.upper())
-                        else:
-                            place_holder_text += key.label.lower()
-                            keyboard.tap(key.label.lower())
+                        keyboard.tap(label.lower())
+                        place_holder_text += label.lower()
 
                     ### Waiting to prevent additional letters be typed
                     sleep(0.2)
 
     ### Showing the window
-    cv2.imshow("Image", img)
+    cv2.imshow("Virtual Keyboard", img)
     cv2.waitKey(1)
