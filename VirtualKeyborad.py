@@ -8,10 +8,10 @@ import cv2
 cam = cv2.VideoCapture(0)
 
 ### Setting webCam resolution
-camW = 640
-camH = 480
-cam.set(3, camW)
-cam.set(4, camH)
+cam_w = 640
+cam_h = 480
+cam.set(3, cam_w)
+cam.set(4, cam_h)
 
 ### Instantiating from handDetector class with some detection confidence (detectionCon)
 ### Change detectionCon to change model's strictness of hand detection
@@ -58,16 +58,16 @@ while True:
     MyKey.draw_all(keys, img, place_holder_text, shift)
 
     ### Getting landmarks' list and bounding box
-    lmList, bboxInfo = detector.findPosition(img)
+    lm_list, bbox_info = detector.findPosition(img)
 
     ### Checking whether any hand in sight
-    if lmList:
+    if lm_list:
         for key in keys:
             x, y = key.position
             w, h = key.size
 
             ### Checking coordinates of index finger
-            if x < lmList[8][0] < x + w and y < lmList[8][1] < y + h:
+            if x < lm_list[8][0] < x + w and y < lm_list[8][1] < y + h:
                 ### Changing color of the hovered key and magnifying it
                 key.draw(img, (180, 0, 180), hovered=1)
 
