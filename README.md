@@ -1,16 +1,16 @@
 # Virtual Keyboard
-Make your fingertips close to each other to type, instead of tapping physical keys. Based on the distance between your index fingertip and your middle fingertip, you can simply type via this virtual keyboard. This keyboard also can be used rather than your physical keyboard, in case you do not want your keystrokes to be tracked.
+This virtual keyboard helps you type without needing to press actual keys. It can also be helpful when you are concerned about your keystrokes being tracked. To press a key, simply place your fingertips close to each other. Based on the distance between your index fingertip and your middle fingertip, you can simply type on this virtual keyboard.
 
 <p align="center">
   <img src="https://github.com/Hormozzan/VirtualKeyboard/blob/main/type.gif" alt="animated" height="350" width="1000"/>
 </p>
 
 ## Usage
-First, install the requirements:
+To install the requirements, copy this line to your terminal:
 ```
 pip install -r requirements.txt
 ```
-Then, use `VirtualKeyboard.py` to use this keyboard for typing:
+Then, run `VirtualKeyboard.py` to use this keyboard for typing:
 ```
 python VirtualKeyboard.py
 ```
